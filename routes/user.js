@@ -81,6 +81,12 @@ router.post("/login", login);
 
 // get a single user
 router.get("/:id", passport.authenticate("jwt", session), async (req, res) => {
+  if (req.user.id !== parseInt(req.params.id)) {
+    return res
+      .status(403)
+      .json({ message: "You are not authorised to access this" });
+  }
+
   const user = await User.findOne({ where: { id: req.params.id } });
   user.passwordHash = undefined;
   res.status(200).json({ msg: user });
@@ -88,6 +94,12 @@ router.get("/:id", passport.authenticate("jwt", session), async (req, res) => {
 
 // update a single user
 router.put("/:id", passport.authenticate("jwt", session), async (req, res) => {
+  if (req.user.id !== parseInt(req.params.id)) {
+    return res
+      .status(403)
+      .json({ message: "You are not authorised to access this" });
+  }
+
   const updatedUser = await User.update(
     { name: req.body.newName },
     { where: { id: req.params.id } }
@@ -101,6 +113,12 @@ router.delete(
   "/:id",
   passport.authenticate("jwt", session),
   async (req, res) => {
+    if (req.user.id !== parseInt(req.params.id)) {
+      return res
+        .status(403)
+        .json({ message: "You are not authorised to access this" });
+    }
+
     const user = await User.findOne({ where: { id: req.params.id } });
     const deletedUser = await user.destroy();
     console.log(deletedUser);
