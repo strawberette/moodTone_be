@@ -5,7 +5,7 @@ const JWTStrategy = require("passport-jwt").Strategy;
 
 const User = require("../models/user");
 
-const mappings = { usernameField: "name", passwordField: "password" };
+const mappings = { usernameField: "email", passwordField: "password" };
 
 // function which hashes password and creates user object
 const register = async (name, password, next) => {

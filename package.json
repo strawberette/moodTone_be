@@ -22,7 +22,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js",
-    "start-container": "docker run --rm --name master32-mysql -dp 3306:3306 -v m32-mysql-config:/etc -v m32-mysql-data:/var/lib/mysql mysql/mysql-server:latest"
+    "start-container": "docker run --rm --name master32-mysql -dp 3306:3306 -v mysql-config:/etc -v mysql-data:/var/lib/mysql mysql/mysql-server:latest"
   },
   "author": "",
   "license": "ISC",

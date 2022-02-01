@@ -25,7 +25,7 @@ router.get("/", passport.authenticate("jwt", session), profile);
 const register = async (req, res, next) => {
   try {
     req.user.name
-      ? res.status(201).json({ msg: "user registered", user: req.user })
+      ? res.status(201).json({ msg: "user registered", userId: req.user.id })
       : res.status(401).json({ msg: "User already exists" });
   } catch (error) {
     next(error);
@@ -60,7 +60,10 @@ const login = async (req, res, next) => {
               user,
               token: jwt.sign({ user: userData }, process.env.SECRET_KEY),
             };
-            res.status(200).json(data);
+            res.status(200).json({
+              user: { name: user.name, id: user.id },
+              token: data.token,
+            });
           }
         };
 
@@ -76,30 +79,15 @@ router.post("/login", login);
 
 //============================== =====================================
 
-// http://localhost/user/getallusers
-// get all users
-router.get("/getallusers", async (req, res) => {
-  const allUsers = await User.findAll({
-    attributes: ["id", "name"],
-  });
-  res.status(200).json({ msg: "worked", data: allUsers });
-});
-
-// delete all users
-router.delete("/deleteallusers", async (req, res) => {
-  const deletedUser = await User.destroy({ where: {} });
-  console.log(deletedUser);
-  res.status(200).json({ msg: `Deleted ${deletedUser}` });
-});
-
 // get a single user
-router.get("/:id", async (req, res) => {
+router.get("/:id", passport.authenticate("jwt", session), async (req, res) => {
   const user = await User.findOne({ where: { id: req.params.id } });
+  user.passwordHash = undefined;
   res.status(200).json({ msg: user });
 });
 
 // update a single user
-router.put("/:id", async (req, res) => {
+router.put("/:id", passport.authenticate("jwt", session), async (req, res) => {
   const updatedUser = await User.update(
     { name: req.body.newName },
     { where: { id: req.params.id } }
@@ -109,11 +97,15 @@ router.put("/:id", async (req, res) => {
 });
 
 // delete a single user
-router.delete("/:id", async (req, res) => {
-  const user = await User.findOne({ where: { id: req.params.id } });
-  const deletedUser = await user.destroy();
-  console.log(deletedUser);
-  res.status(200).json({ msg: deletedUser });
-});
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", session),
+  async (req, res) => {
+    const user = await User.findOne({ where: { id: req.params.id } });
+    const deletedUser = await user.destroy();
+    console.log(deletedUser);
+    res.status(200).json({ msg: deletedUser });
+  }
+);
 
 module.exports = router;

@@ -4,7 +4,10 @@ const passport = require("passport");
 const connection = require("./connection");
 const cors = require("cors");
 const User = require("./models/user");
+const Track = require("./models/track");
 const userRouter = require("./routes/user");
+const trackRouter = require("./routes/track");
+
 const {
   registerStrategy,
   loginStrategy,
@@ -17,6 +20,7 @@ app.use(express.json());
 app.use(cors({ origin: "*" }));
 app.use(passport.initialize());
 app.use("/user", userRouter);
+app.use("/track", trackRouter);
 
 passport.use("register", registerStrategy);
 passport.use("login", loginStrategy);
@@ -25,5 +29,6 @@ passport.use(verifyStrategy);
 app.listen(process.env.PORT, () => {
   connection.authenticate();
   User.sync({ alter: true });
+  Track.sync({ alter: true });
   console.log("App is online");
 });

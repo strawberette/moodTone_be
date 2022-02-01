@@ -1,19 +1,22 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const bcrypt = require("bcrypt");
 const connection = require("../connection");
-console.log(connection.define)
+console.log(connection.define);
 const hash = require("../hash");
 
-
-const User = connection.define("User", {
+const User = connection.define(
+  "User",
+  {
     name: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     passwordHash: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-}, {indexed: [{unique: true, fields: ["name"]}]});
+  },
+  { indexed: [{ unique: true, fields: ["id", "name"] }] }
+);
 
 module.exports = User;
