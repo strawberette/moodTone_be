@@ -14,10 +14,12 @@ router.post("/:id", passport.authenticate("jwt", session), async (req, res) => {
   await Track.create({
     trackId: req.body.trackId,
     UserId: req.params.id,
+    MoodId: req.body.moodId,
   });
   res.status(201).json({
     trackId: req.body.trackId,
-    UserId: req.body.userId,
+    UserId: req.params.userId,
+    MoodId: req.body.moodId,
   });
 });
 

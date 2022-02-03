@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const connection = require("../connection");
 console.log(connection.define);
 const hash = require("../hash");
+const Track = require("./track");
 
 const User = connection.define(
   "User",
