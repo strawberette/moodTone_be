@@ -1,13 +1,17 @@
 const { Sequelize, DataTypes } = require("sequelize");
-const User = require("./user");
-const connection = require("../connection");
-const Mood = require("./mood");
 
-const Track = connection.define(
-  "Track",
+const connection = require("../connection");
+const Track = require("./track");
+
+const Mood = connection.define(
+  "Mood",
   {
-    trackId: {
+    moodId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    moodColour: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },
@@ -16,8 +20,4 @@ const Track = connection.define(
   }
 );
 
-// Track.belongsTo(User);
-
-// Track.belongsTo(Mood);
-
-module.exports = Track;
+module.exports = Mood;
