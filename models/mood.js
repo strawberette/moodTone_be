@@ -14,6 +14,10 @@ const Mood = connection.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    moodName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     indexed: [{ unique: true, fields: ["id"] }],
