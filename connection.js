@@ -1,5 +1,5 @@
 const { Sequelize } = require("sequelize");
-
+console.log(process.env.DB_URI);
 let connection;
 
 if (process.env.NODE_ENV === "PRODUCTION") {
@@ -13,7 +13,8 @@ if (process.env.NODE_ENV === "PRODUCTION") {
     },
   });
 } else {
-  connection = new Sequelize(process.env.DB_URI);
+  console.log("!!!!!!");
+  connection = new Sequelize("mysql://root:password@localhost:3306/moodTone");
 }
 
 module.exports = connection;

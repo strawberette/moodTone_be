@@ -1,4 +1,5 @@
 require("dotenv").config();
+console.log(process.env.DB_URI);
 const express = require("express");
 const passport = require("passport");
 const connection = require("./connection");
