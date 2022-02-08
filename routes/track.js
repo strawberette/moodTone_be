@@ -11,6 +11,21 @@ router.post("/:id", passport.authenticate("jwt", session), async (req, res) => {
       .json({ message: "You are not authorised to access this" });
   }
 
+  const track = await Track.findOne({
+    where: {
+      UserId: req.params.id,
+      MoodId: req.body.moodId,
+    },
+  });
+
+  if (track) {
+    return res.status(201).json({
+      trackId: req.body.trackId,
+      UserId: req.params.userId,
+      MoodId: req.body.moodId,
+    });
+  }
+
   await Track.create({
     trackId: req.body.trackId,
     UserId: req.params.id,
