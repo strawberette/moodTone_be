@@ -14,7 +14,7 @@ router.post("/:id", passport.authenticate("jwt", session), async (req, res) => {
   const track = await Track.findOne({
     where: {
       UserId: req.params.id,
-      MoodId: req.body.moodId,
+      trackId: req.body.trackId,
     },
   });
 
@@ -59,10 +59,10 @@ router.delete(
         .status(403)
         .json({ message: "You are not authorised to access this" });
     }
-
     const track = await Track.findOne({
       where: { UserId: req.params.id, trackId: req.body.trackId },
     });
+
     const deletedTrack = await track.destroy();
     console.log(deletedTrack);
     res.status(200).json({ deletedTrack });
